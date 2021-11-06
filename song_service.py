@@ -5,6 +5,7 @@ from flask import Flask, request
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
+port = 4519
 
 def scrape(response):
     '''Scrape all artists and songs from Billboard 100 list'''
@@ -58,4 +59,4 @@ def index():
     return random_list
 
 if __name__ == '__main__' :
-    app.run(port=4517, debug=True)
+    app.run(port=port, debug=True)
