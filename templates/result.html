@@ -1,0 +1,104 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}
+    Airplane Selector
+{% endblock %}
+
+{% block head %}
+{{super()}}
+<link href="stylesheet" type="text/css" href="/static/stylesheet.css">  
+{% endblock %}
+
+{% block content %}
+
+<div class = "body-content">
+    <div class="container">
+      <div class="p-2 bg-primary text-white" style="padding: 1rem">
+        <h1 class="display-1 text-center" color="blue">Airplane Selector</h1>
+      </div>
+
+      <div class="d-block bg-primary text-white" style="margin-top: 1rem; margin-bottom: 2rem; padding: 1rem">
+        <h4>Results : </b> Hello airline executive! Based on your selection, the top (3) airplanes for 
+         your lease or purchase consideration are displayed.</h4>
+    </div>
+
+     <div class="container-fluid">
+        <div class="row p-3 mb-2 bg-light text-dark">
+            <div class="col-md-4 border border-secondary">  
+                <div class="card" style="padding: 1rem">
+                    <img class="card-img-top" src="/static/images/img0.jpg" alt="Card image cap" style="max-width: 100%; max-height: 100%;">
+                    <div class="card-body">
+                      <h4 class="card-title" style="text-align: center">{{airplane_details[0]["name"]}}</h4>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">Range: {{airplane_details[0]["range"]}} km</li>
+                      <li class="list-group-item">Max Seats: {{airplane_details[0]["seats"]}}</li>
+                      <li class="list-group-item">Fuel Efficiency: {{airplane_details[0]["efficiency"]}} liter/(passenger-km)</li>
+                    </ul>
+                    <div class="card-body">
+                      <p class="card-text">Source: {{airplane_details[0]["source"]}}</p>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="col-md-4 border border-secondary">  
+                <div class="card" style="padding: 1rem">
+                    <img class="card-img-top text-center" src="/static/images/img1.jpg" alt="Card image cap" style="max-width: 100%; max-height: 100%;">
+                    <div class="card-body">
+                      <h4 class="card-title" style="text-align: center">{{airplane_details[1]["name"]}}</h5>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">Range: {{airplane_details[1]["range"]}} km</li>
+                      <li class="list-group-item">Max Seats: {{airplane_details[1]["seats"]}}</li>
+                      <li class="list-group-item">Fuel Efficiency: {{airplane_details[1]["efficiency"]}} liter/(passenger-km)</li>
+                    </ul>
+                    <div class="card-body">
+                      <p class="card-text">Source: {{airplane_details[1]["source"]}}</p>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="col-md-4 border border-secondary">  
+                <div class="card" style="padding: 1rem">
+                    <img class="card-img-top text-center" src="/static/images/img2.jpg" alt="Card image cap" style="max-width: 100%; max-height: 100%;">
+                    <div class="card-body">
+                      <h4 class="card-title" style="text-align: center">{{airplane_details[2]["name"]}}</h4>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">Range: {{airplane_details[2]["range"]}} km</li>
+                      <li class="list-group-item">Max Seats: {{airplane_details[2]["seats"]}}</li>
+                      <li class="list-group-item">Fuel Efficiency: {{airplane_details[2]["efficiency"]}} liter/(passenger-km)</li>
+                    </ul>
+                    <div class="card-body">
+                      <p class="card-text">Source: {{airplane_details[2]["source"]}}</p>
+                    </div>
+                </div> 
+            </div>
+         </div>
+     </div>
+
+    <h4>Starting City: {{startingcity}}</h4>
+    <h4>Destination City: {{destinationcity}}</h4>
+    <h4>Priority: {{priority}}</h4>
+    <h4>Distance: {{distance}} km</h4>
+    <h4>{{airplane_details}}</h4>
+
+<form action="reset" method="GET">
+    <button type="submit" class="btn btn-primary" value="Reset">Reset</button>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://kit.fontawesome.com/015d63ce65.js" crossorigin="anonymous"></script>
+<script>
+  $(function() {
+    $('[data-popover]').popover();
+    $('[data-toggle="tooltip"]').tooltip()
+  });
+</script>
+{% endblock %}
+</html>

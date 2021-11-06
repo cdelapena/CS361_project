@@ -1,0 +1,113 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}
+    Airplane Selector
+{% endblock %}
+
+{% block head %}
+{{super()}}
+<link href="stylesheet" type="text/css" href="/static/stylesheet.css">  
+{% endblock %}
+
+{% block content %}
+<div class = "body-content">
+  <div class="container">
+    <div class="p-2 bg-primary text-white" style="padding: 1rem">
+      <h1 class="display-1 text-center" color="blue">Airplane Selector</h1>
+    </div>
+
+    <div class="d-block bg-primary text-white" style="margin-top: 1rem; margin-bottom: 2rem; padding: 1rem">
+        <h4>INSTRUCTION : </b> Hello airline executive! Complete the following selections below to see our top (3)
+            airplane recommendations.</h4>
+    </div>
+    
+    <form action="result" method="POST">
+      <div class="form-row">
+        <div class="col-md-4">
+          <label for="starting-city">Starting City</label>
+          <a href="#" data-tooltip title="Select the city your airplane will depart from.">What's this?</a>
+          <select class="form-control" name="starting-city" id="starting-city">
+            <option>Dubai</option>
+            <option>Hong Kong</option>
+            <option>Honolulu</option>
+            <option>London</option>
+            <option>Los Angeles</option>
+            <option>New York</option>
+            <option>Sao Paulo</option>
+            <option>Sydney</option>
+            <option>Tokyo</option>          
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="destination-city">Destination City</label>
+          <a href="#" data-tooltip title="Select the city your airplane will land in. Must not be the same as starting city">
+              What's this?
+          </a>
+          <select class="form-control" name="destination-city" id="destination-city">
+            <option>Dubai</option>
+            <option>Hong Kong</option>
+            <option>Honolulu</option>
+            <option>London</option>
+            <option>Los Angeles</option>
+            <option>New York</option>
+            <option>Sao Paulo</option>
+            <option>Sydney</option>
+            <option>Tokyo</option> 
+          </select>
+        </div>
+      </div>
+    
+    <fieldset class="form-group">
+      <div class="form-row">
+        <legend class="col-form-label col-sm-2 pt-0">Priority Select 
+          <a href="#" data-tooltip title="Select the most important selection criteria for your airplane">
+            What's this?
+          </a>
+        </legend>
+        <div class="col-sm-10">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="gridRadios" id="range" value="range" checked>
+            <label class="form-check-label" for="range">
+              Optimum Range
+            </label>
+            <a href="#" data-tooltip title="Select the airplane with the max range closest to your chosen cities">
+                What's this?
+            </a>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="gridRadios" id="seats" value="seats">
+            <label class="form-check-label" for="seats">
+              Maximum Seats
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="gridRadios" id="efficiency" value="efficiency">
+            <label class="form-check-label" for="efficiency">
+              Optimum Fuel Efficiency (gallons/mile)
+            </label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+      </div>
+    </div>
+    </form>
+    
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://kit.fontawesome.com/015d63ce65.js" crossorigin="anonymous"></script>
+<script>
+  $(function() {
+    $('[data-popover]').popover();
+    $('[data-toggle="tooltip"]').tooltip()
+  });
+</script>
+{% endblock %}
