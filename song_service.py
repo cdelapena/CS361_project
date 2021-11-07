@@ -40,23 +40,28 @@ def select_random(full_list, num_tracks):
     
     return random_dict
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST', 'GET'])
 def index():
-    request_json = request.get_json()
-    print('Here is the json request: ', request_json)
+    if request.method == 'POST':
+        request_json = request.get_json()
+        print('Here is the json request: ', request_json)
 
-    request_dict = json.loads(request_json)
+        request_dict = json.loads(request_json)
 
-    date = request_dict['date']
-    num_tracks = request_dict['num_tracks']
-    url = 'https://www.billboard.com/charts/hot-100/' + date
-    response = requests.get(url)
+        date = request_dict['date']
+        num_tracks = request_dict['num_tracks']
+        url = 'https://www.billboard.com/charts/hot-100/' + date
+        response = requests.get(url)
 
-    full_list = scrape(response)
+        full_list = scrape(response)
 
-    random_list = select_random(full_list, num_tracks)
+        random_list = select_random(full_list, num_tracks)
     
-    return random_list
+        return random_list
+
+    else:
+        print('Get request received. Please make a POST request.')
+        return "Get request received. Please make a POST request."
 
 if __name__ == '__main__' :
     app.run(port=port, debug=True)

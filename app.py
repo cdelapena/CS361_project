@@ -61,7 +61,7 @@ def get_efficiency(soup, range, seats):
         max_fuel = next_string.text.strip()
         # remove spaces
         max_fuel = max_fuel.replace(' ', '')
-        max_fuel = int(max_fuel)
+        max_fuel = int(max_fuel[-5:])
     else: # in kilograms
         next_string = string.find_next("td")
         max_fuel = next_string.text.strip()
@@ -124,10 +124,8 @@ def result():
     startingcity = request.form['starting-city']
     destinationcity = request.form['destination-city']
     priority = request.form['gridRadios']
-    airplane_names = {"name" : ['airbus-a380', 'embraer-e195-e2', 'boeing-747-8', 'boeing-787-10', 'boeing-737-max-10']}
-    #, 'airbus-a321neo', 'airbus-a330-300', ,, , 
-    #    'bombardier-cs100', 'bombardier-cs300', 'embraer-e195-e2', 'embraer-e190-e2',  'embraer-e175-e2']}
-
+    airplane_names = {"name" : ['airbus-a320neo', 'airbus-a321neo', 'airbus-a330-300', 'boeing-767-300', 'boeing-777-9', 'boeing-737-max-10']}
+    # 'bombardier-cs100', 'bombardier-cs300', 
     # build dictionary of dictionaries using scraper
     airplane_details = {}
     for i in range(0, len(airplane_names["name"])): 
@@ -158,5 +156,5 @@ def result():
     destinationcity=destinationcity, priority=priority, airplane_details=airplane_details)
 
 if __name__ == '__main__' :
-    port = int(os.environ.get('PORT', 4518))
+    port = int(os.environ.get('PORT', 4517))
     app.run(port=port, debug=True)

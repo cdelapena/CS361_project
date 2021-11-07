@@ -1,12 +1,10 @@
 import requests
 import json
 
-port = 4519
-
-url = 'http://localhost:4519'
+url = 'http://flip1.engr.oregonstate.edu:4519'
 # Request: {'num_tracks':[number of tracks], 'date': [date that corresponds w/ sunday of any given week]}
 # Response: {'artist_1' : 'song_1', 'artist_2':'song_2' ...}
-query = {'num_tracks' : 3, 'date' : '2018-06-01'}
+query = {"num_tracks": 1, "date": "2021-10-24"}
 json_dump = json.dumps(query)
 print(json_dump)
 response = requests.post(url=url, json=json_dump)
