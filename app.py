@@ -13,6 +13,8 @@ def get_distance(startingcity, destinationcity):
     return response["distance"]
 
 def get_source(airplane):
+    # must assign airplane.replace to variable, otherwise changed string will not be stored
+    airplane = airplane.replace(" ", "-")
     url = f'https://www.airlines-inform.com/commercial-aircraft/{airplane}.html'
     return url
 
@@ -32,12 +34,9 @@ def get_picture(soup, i):
         f.write(r.content)
     return src
 
-def get_range(soup):
-    string = soup.find("td", text="Range with max payload (km)")
-    next_string = string.find_next("td")
-    range = next_string.text.strip()
-    # must reassign to self or spaces remain
-    range = range.replace(' ', '')
+def get_range(range):
+    if len(range) > 5:
+        range = range[-5:]
     range = int(range)
     return range
 
@@ -53,35 +52,36 @@ def get_seats(soup):
     seats = int(seats[-3:])
     return seats
 
-def get_efficiency(soup, range, seats):
-    string = soup.find("td", text="Max stock of fuel (kg)")
-    if string is None: # is already in liters
-        string = soup.find("td", text="Standard fuel capacity (litres)")
-        next_string = string.find_next("td")
-        max_fuel = next_string.text.strip()
+def get_efficiency(fuel, range, seats):
+    #string = soup.find("td", text="Max stock of fuel (kg)")
+    #if string is None: # is already in liters
+        #string = soup.find("td", text="Standard fuel capacity (litres)")
+        #next_string = string.find_next("td")
+        #max_fuel = next_string.text.strip()
         # remove spaces
-        max_fuel = max_fuel.replace(' ', '')
-        max_fuel = int(max_fuel[-5:])
-    else: # in kilograms
-        next_string = string.find_next("td")
-        max_fuel = next_string.text.strip()
-        # convert to number
-        max_fuel = max_fuel.replace(' ', '')
-        max_fuel = int(max_fuel)
-        fuel_density = 0.807 # kg per liter
-        # obtain max fuel in liters rounded to 3 decimals
-        max_fuel = max_fuel/fuel_density
+
+    fuel = fuel[-6:]
+    if fuel[0] == "-":
+        fuel = fuel[1:]
+    # convert to int
+    fuel = int(fuel)
+    range = int(range)
+    seats = int(seats[-3:])
+    fuel_density = 0.807 # kg per liter
+    # obtain max fuel in liters rounded to 3 decimals
+    fuel_kg = fuel/fuel_density
     # obtain liter/(seat-km) for fuel efficiency
-    efficiency = max_fuel/(seats*range)
+    efficiency = fuel_kg/(seats*range)
     efficiency = round(efficiency, 5)
     # round to 3 places
     return efficiency
 
 def range_check(airplanes, distance):
+    new_dict = {}
     for key, value in airplanes.items():
-        if value["range"] < distance:
-            del airplanes[key]
-            break
+        if int(value["range"]) > distance:
+            new_dict[key] = value
+    return new_dict
 
 def priority_sort(airplanes, priority):
     #sort the priority
@@ -124,26 +124,33 @@ def result():
     startingcity = request.form['starting-city']
     destinationcity = request.form['destination-city']
     priority = request.form['gridRadios']
-    airplane_names = {"name" : ['airbus-a320neo', 'airbus-a321neo', 'airbus-a330-300', 'boeing-767-300', 'boeing-777-9', 'boeing-737-max-10']}
+    airplane_names = {"name" : ["Airbus A320neo", "Airbus A321neo", "Airbus A330-800neo", "Airbus A340-600", "Airbus A350-900",
+                    "Airbus A380", "Boeing 737 MAX 7", "Boeing 737 MAX 8", "Boeing 737 MAX 10", "Boeing 767-300", "Boeing 777-9", 
+                    "Boeing 787-10"]}
     # 'bombardier-cs100', 'bombardier-cs300', 
     # build dictionary of dictionaries using scraper
-    airplane_details = {}
-    for i in range(0, len(airplane_names["name"])): 
+    
+    # microservice URL
+    url = 'http://flip3.engr.oregonstate.edu:8776'
+    response = requests.post(url=url, json=airplane_names)
+    # convert to json
+    response = response.json()
+
+    airplane_details = response
+    
+    for i in airplane_details:
         # Create dictionary or will get keyerror0
-        airplane_details[i] = {}
-        airplane_details[i]["name"] = airplane_names["name"][i]
-        soup = get_soup(airplane_names["name"][i])
-        airplane_details[i]["range"] = get_range(soup)
-        airplane_details[i]["seats"] = get_seats(soup)
-        airplane_details[i]["efficiency"] = get_efficiency(soup, airplane_details[i]["range"], airplane_details[i]["seats"])
-        airplane_details[i]["source"] = get_source(airplane_names["name"][i])
+        #soup = get_soup(airplane_details[i]["name"])
+        airplane_details[i]["range"] = get_range(airplane_details[i]["range"])
+        airplane_details[i]["efficiency"] = get_efficiency(airplane_details[i]["fuel"], airplane_details[i]["range"], airplane_details[i]["seats"])
+        airplane_details[i]["source"] = get_source(airplane_details[i]["name"])
     
     distance = get_distance(startingcity, destinationcity)
     # km = distance["distance"]
     # miles = int(km * 0.621371)
 
     #check range
-    range_check(airplane_details, distance)
+    airplane_details = range_check(airplane_details, distance)
     #sort by priority
     airplane_details = priority_sort(airplane_details, priority)
     #include pictures
