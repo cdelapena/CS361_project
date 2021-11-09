@@ -14,7 +14,7 @@ response = response.json()
 
 
 for i in response:
-    print(response[i])
+    print(response[i]["range"])
 #query = {"name" : ['airbus-a320neo', 'airbus-a321neo', 'airbus-a330-300', 'boeing-767-300', 'boeing-777-9', 'boeing-737-max-10']}
 
 

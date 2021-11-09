@@ -83,7 +83,6 @@
     <h4>Destination City: {{destinationcity}}</h4>
     <h4>Priority: {{priority}}</h4>
     <h4>Distance: {{distance}} km</h4>
-    <h4>{{airplane_details}}</h4>
 
 <form action="reset" method="GET">
     <button type="submit" class="btn btn-primary" value="Reset">Reset</button>
@@ -93,7 +92,6 @@
 
 {% block scripts %}
 {{ super() }}
-<script src="https://kit.fontawesome.com/015d63ce65.js" crossorigin="anonymous"></script>
 <script>
   $(function() {
     $('[data-popover]').popover();

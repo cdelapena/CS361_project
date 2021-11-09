@@ -123,8 +123,9 @@ def reset():
 def result():
     startingcity = request.form['starting-city']
     destinationcity = request.form['destination-city']
+    distance = get_distance(startingcity, destinationcity)
     priority = request.form['gridRadios']
-    airplane_names = {"name" : ["Airbus A320neo", "Airbus A321neo", "Airbus A330-800neo", "Airbus A340-600", "Airbus A350-900",
+    airplane_names = {"name" : ["Airbus A320neo", "Airbus A321neo", "Airbus A330-300", "Airbus A340-600", "Airbus A350-1000",
                     "Airbus A380", "Boeing 737 MAX 7", "Boeing 737 MAX 8", "Boeing 737 MAX 10", "Boeing 767-300", "Boeing 777-9", 
                     "Boeing 787-10"]}
     # 'bombardier-cs100', 'bombardier-cs300', 
@@ -144,10 +145,6 @@ def result():
         airplane_details[i]["range"] = get_range(airplane_details[i]["range"])
         airplane_details[i]["efficiency"] = get_efficiency(airplane_details[i]["fuel"], airplane_details[i]["range"], airplane_details[i]["seats"])
         airplane_details[i]["source"] = get_source(airplane_details[i]["name"])
-    
-    distance = get_distance(startingcity, destinationcity)
-    # km = distance["distance"]
-    # miles = int(km * 0.621371)
 
     #check range
     airplane_details = range_check(airplane_details, distance)
