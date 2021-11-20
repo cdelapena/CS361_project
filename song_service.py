@@ -42,6 +42,7 @@ def select_random(full_list, num_tracks):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    '''Initiate scraping microservice'''
     if request.method == 'POST':
         request_json = request.get_json()
         print('Here is the json request: ', request_json)
