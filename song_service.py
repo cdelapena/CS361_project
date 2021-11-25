@@ -13,8 +13,8 @@ def scrape(response):
     soup = BeautifulSoup(response.content, 'html.parser')
 
     # obtain elements from soup
-    songs = soup.find_all(class_="chart-element__information__song text--truncate color--primary")
-    artists = soup.find_all(class_="chart-element__information__artist text--truncate color--secondary")
+    songs = soup.find_all(class_="c-title a-no-trucate a-font-primary-bold-s u-letter-spacing-0021 lrv-u-font-size-18@tablet lrv-u-font-size-16 u-line-height-125 u-line-height-normal@mobile-max a-truncate-ellipsis u-max-width-330 u-max-width-230@tablet-only")
+    artists = soup.find_all(class_="c-label a-no-trucate a-font-primary-s lrv-u-font-size-14@mobile-max u-line-height-normal@mobile-max u-letter-spacing-0021 lrv-u-display-block a-truncate-ellipsis-2line u-max-width-330 u-max-width-230@tablet-only")
     # strip text to obtain song titles and artists
     song_titles = [song.text.strip() for song in songs]
     artist_list = [artist.text.strip() for artist in artists]
@@ -53,7 +53,6 @@ def index():
         num_tracks = request_dict['num_tracks']
         url = 'https://www.billboard.com/charts/hot-100/' + date
         response = requests.get(url)
-
         full_list = scrape(response)
 
         random_list = select_random(full_list, num_tracks)
